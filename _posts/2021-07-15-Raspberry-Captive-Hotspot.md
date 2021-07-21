@@ -1,4 +1,4 @@
-##背景
+## 背景
 
 工作需要用到WiFi Captive Portal热点做测试，而路由器不方便开启这个功能，遂想到自己搭建
 
@@ -8,9 +8,9 @@ WiFi Captive Portal 中文一般叫做无线认证门户
 
 在树莓派4b上实验成功
 
-\## 安装步骤
+## 安装步骤
 
-\### 安装raspap开源项目
+### 安装raspap开源项目
 
 ```
 curl -sL https://install.raspap.com | bash
@@ -36,25 +36,25 @@ Password: ChangeMe
 
 修改WiFi密码，保存
 
-\### 用nodogsplash创建captive portal
+### 用nodogsplash创建captive portal
 
 nodogsplash需要自己编译安装
 
 安装依赖库
 
-\```
+```
 
 sudo apt install git libmicrohttpd-dev
 
-\```
+```
 
-\```
+```
 
 git clone https://github.com/nodogsplash/nodogsplash.git
 
-\```
+```
 
-\```
+```
 
 cd ~/nodogsplash
 
@@ -62,9 +62,9 @@ make
 
 sudo make install
 
-\```
+```
 
-\### 配置captive portal
+### 配置captive portal
 
 ```
 sudo vi /etc/nodogsplash/nodogsplash.conf
@@ -72,7 +72,7 @@ sudo vi /etc/nodogsplash/nodogsplash.conf
 
 增加以下配置
 
-\```
+```
 
 GatewayInterface wlan0
 
@@ -82,7 +82,7 @@ MaxClients 250
 
 AuthIdleTimeout 480
 
-\```
+```
 
 启动
 
@@ -92,9 +92,9 @@ sudo nodogsplash
 
 **至此，树莓派接入有线网+WiFi热点建立Captive Portal基本功能搭建完成**
 
-\## 进阶
+## 进阶
 
-\### 开机自动启动nodogsplash
+### 开机自动启动nodogsplash
 
 sudo vi /etc/rc.local
 
@@ -108,7 +108,7 @@ nodogsplash
 sudo vi /lib/systemd/system/nodogsplash.service
 ```
 
-\```
+```
 
 [Unit]
 
@@ -130,7 +130,7 @@ Restart=on-failure
 
 WantedBy=multi-user.target
 
-\```
+```
 
 之后运行
 
@@ -140,23 +140,23 @@ sudo systemctl enable nodogsplash
 
 重启后生效
 
-\### 树莓派WiFi同时做WiFi接入点和AP热点
+### 树莓派WiFi同时做WiFi接入点和AP热点
 
 前面方法都是用有线做接入点，稍显不便，配置成无线做接入点，方便移动
 
 时间关系，留到后续再搞
 
-\### 修改热点改成5G频段
+### 修改热点改成5G频段
 
 TODO
 
-\### 关闭RaspAP
+### 关闭RaspAP
 
-\```
+```
 
 sudo systemctl disable nodogsplash.service
 
-\```
+```
 
 进入10.3.141.1管理界面，用户名admin, 密码secret
 
@@ -164,16 +164,16 @@ sudo systemctl disable nodogsplash.service
 
 彻底关闭RaspAP自动启动，待研究
 
-\## 参考资料
+## 参考资料
 
-\- [How to Turn Your Raspberry Pi into a Captive Portal Wi‐Fi Access Point](https://www.maketecheasier.com/turn-raspberry-pi-captive-portal-wi%E2%80%90fi-access-point/)
+- [How to Turn Your Raspberry Pi into a Captive Portal Wi‐Fi Access Point](https://www.maketecheasier.com/turn-raspberry-pi-captive-portal-wi%E2%80%90fi-access-point/)
 
-\- [Rasp AP Project](https://github.com/RaspAP/raspap-webgui)
+- [Rasp AP Project](https://github.com/RaspAP/raspap-webgui)
 
-\- [Nodogsplash(NDS) Project](https://github.com/nodogsplash/nodogsplash)
+- [Nodogsplash(NDS) Project](https://github.com/nodogsplash/nodogsplash)
 
-\- [Rasp AP Captive官方文档, 看到晚了，这篇讲得很详细](https://docs.raspap.com/captive.html)
+- [Rasp AP Captive官方文档, 看到晚了，这篇讲得很详细](https://docs.raspap.com/captive.html)
 
-\- [自制简单Wi-Fi Captive Portal，支持树莓派](https://iedon.com/2017/10/18/623.html)
+- [自制简单Wi-Fi Captive Portal，支持树莓派](https://iedon.com/2017/10/18/623.html)
 
-\- [ndsctl命令手册](https://opennds.readthedocs.io/en/stable/ndsctl.html)
+- [ndsctl命令手册](https://opennds.readthedocs.io/en/stable/ndsctl.html)
