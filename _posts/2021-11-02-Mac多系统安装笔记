@@ -1,0 +1,35 @@
+## 前言
+
+我的MacbookPro 2012两年前买了一块国产的SSD, 快要过保的时候出现了坏块，系统莫名其妙会死机，好在厂家服务还算过得去，给换了一块新的，正好我Mac上的三个系统，Mac, Windows10, Ubuntu分区大小早就想调整一下，乘此机会重装一下，印象中Mac装多系统除了windows bootcamp驱动以外并没有什么特别要注意的，没想到这次重装遇到了大坑，记录一下流程以备忘, 这个安装要用到Mac下的商业分区软件（可以试用），不算完美，后期有更好的方法再补充。
+
+我是先装了Mac + Bootcamp安装了Windows10, 然后在Mac中分了一块区，用U盘安装了Ubuntu18.04, 安装完Ubuntu以后，发现Windows进不去了，最近主力系统是Windows, 必须要修复，开始以为是系统引导问题，试了很多修复引导的方法，没用。
+
+后来看到一篇博客和帖子，说可能是windows分区被破坏了。
+
+
+
+另外看到一个帖子
+
+[Macbook安装Mac OS X, Windows7, Ubuntu三系统共存备忘 - Ubuntu中文论坛](https://forum.ubuntu.org.cn/viewtopic.php?t=261921)
+
+**由于Macbook用的是EFI系统和GUID-MBR联合分区表，普通PC上的基于Grub的多系统共存方案都不适用**。根据本人反复试验，重装几十次的代价，总结出如下方法可以实现Macbook上的多系统共存。
+
+**总的安装原则**：先安装Mac →Ubuntu → Windows ，如果先安装Ubuntu, Windows会出现无法引导。
+
+## 安装步骤
+
+1. 机器里一定要有Mac系统。如果没有，先安装mac os。
+2. 用磁盘工具划分出空闲空间用来装Windows10，用Bootcamp亦可。注意此时要保证硬盘里总共只有3个分区：EFI隐藏分区、Mac分区和Win10分区。给Ubuntu用的分区这个时候还不能先分出来，否则后面会发生某个系统不能引导的情况。
+3. 可以用Win10安装盘对Win10分区进行格式化。Win10安装完成后，回到Mac下再一次从Mac分区后面划分出空闲空间，利用Paragon ext等第三方驱动，在磁盘工具里把这个空闲空间格式化成Ext4。注意此处必须在Mac下格式化Ubuntu用的分区，**如果用Ubuntu Live CD格式化，会破坏分区表，导致Mac无法引导。**
+4. 安装Ubuntu，选择刚才格式化的分区，注意千万不要在安装过程中格式化，只把它挂载成/即可。
+5. 继续完成安装Windows10
+
+## 后记
+
+不久我的Mac mini2012 也重装了一次，基本方法也大同小异
+
+需要说明的是Mac Mini装了两块硬盘，一块是500G Toshiba机械硬盘，另一块是Samsung SSD 1T，Toshiba是sda1, Samsung 是sda2
+
+- 由于Mac系统只是维护才用，安装在Toshiba机械硬盘, EFI引导也在这里
+- Windows & Ubuntu安装在Samsung硬盘，EFI分区在Toshiba硬盘
+- 注意同样需要先安装Ubuntu，再装Windows
